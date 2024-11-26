@@ -60,6 +60,7 @@ export async function fetchCardData() {
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
          FROM invoices`;
 
+    // Parallel data fetching
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
@@ -133,7 +134,7 @@ export async function fetchInvoicesPages(query: string) {
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
-    return totalPages;
+return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of invoices.');
@@ -161,6 +162,9 @@ export async function fetchInvoiceById(id: string) {
     return invoice[0];
   } catch (error) {
     console.error('Database Error:', error);
+
+    // if no data will display error page, not not-found page
+    // except not use throw Error
     throw new Error('Failed to fetch invoice.');
   }
 }
